@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <script src="../js/sound.js"></script>
+    </head>
+    <body>
+        音程:<select id="interval">
+            <option>ランダム</option>
+            <option>A1</option>
+            <option>B1</option>
+            <option>C1</option>
+            <option>D1</option>
+            <option>E1</option>
+            <option>F1</option>
+            <option>G1</option>
+            <option>A2</option>
+            <option>B2</option>
+            <option>C2</option>
+            <option>D2</option>
+            <option>E2</option>
+            <option>F2</option>
+            <option>G2</option>
+            <option>A3</option>
+            <option>B3</option>
+            <option>C3</option>
+            <option>D3</option>
+            <option>E3</option>
+            <option>F3</option>
+            <option>G3</option>
+            <option>A4</option>
+            <option>B4</option>
+            <option>C4</option>
+            <option>D4</option>
+            <option>E4</option>
+            <option>F4</option>
+            <option>G4</option>
+            <option>A5</option>
+            <option>B5</option>
+            <option>C5</option>
+            <option>D5</option>
+            <option>E5</option>
+            <option>F5</option>
+            <option>G5</option>
+            <option>A6</option>
+            <option>B6</option>
+            <option>C6</option>
+            <option>D6</option>
+            <option>E6</option>
+            <option>F6</option>
+            <option>G6</option>
+            <option>A7</option>
+            <option>B7</option>
+            <option>C7</option>
+            <option>D7</option>
+            <option>E7</option>
+            <option>F7</option>
+            <option>G7</option>
+        </select><br>
+        ボリューム:<input type="text" value="50" id="volume"><br>
+        <input type="submit" value="鳴らす" id="submit"><br>
+    </body> 
+</html>
+
+<script>
+var samplerate = 48000, channel = 1, stream_length = 4096;
+
+var player = new Player();
+player.play(g);
+
+</script>

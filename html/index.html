@@ -1,6 +1,7 @@
 <html>
     <head>
-        <script src="../js/sound.js"></script>
+        <meta charset="UTF-8"> 
+        <script src="../js/player.js"></script>
     </head>
     <body>
         音程:<select id="interval">
@@ -58,12 +59,22 @@
         ボリューム:<input type="text" value="50" id="volume"><br>
         <input type="submit" value="鳴らす" id="submit"><br>
     </body> 
+
+    <script>
+        window.addEventListener("load",function(){
+            var samplerate = 48000, channel = 1, stream_length = 4096;
+            
+            var playerOption = {
+                sampleRate : 48000 ,
+                channel : 2 ,
+                streamLength : 4096 ,
+            };
+            var frequencyArray = [440];
+            var player = new Player( new webkitAudioContext() , playerOption , frequencyArray);
+            player.play();
+            setTimeout(function(){
+                player.stop();
+            }, 1500);
+        })
+    </script>
 </html>
-
-<script>
-var samplerate = 48000, channel = 1, stream_length = 4096;
-
-var player = new Player();
-player.play(g);
-
-</script>

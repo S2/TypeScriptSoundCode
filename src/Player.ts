@@ -23,6 +23,7 @@ class Player{
             var stream = streamGenerator.getStream(self.frequencyArray);
             var i = data.length;
             while (i--){
+                console.log(i);
                 data[i] = stream[i];
             }
         };

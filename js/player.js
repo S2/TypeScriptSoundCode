@@ -13,12 +13,14 @@ var StreamGenerator = (function () {
     StreamGenerator.prototype.getStream = function (frequencyArray) {
         var stream = [];
         var arrayLength = frequencyArray.length;
-        var phaseStep = frequency / this.options.sampleRate;
+        var phaseStep = frequencyArray[0] / this.options.sampleRate;
         for (var i = 0; i < this.options.streamLength; i++) {
-            for (var i = 0; i < arrayLength; i++) {
-                var frequency = frequencyArray[i];
+            stream[i] = 0;
+            for (var j = 0; j < arrayLength; j++) {
+                var frequency = frequencyArray[j];
                 stream[i] += this.getWave(frequency);
             }
+            console.log(stream[i] + "");
             this.phase += phaseStep;
         }
         return stream;
@@ -43,6 +45,7 @@ var Player = (function () {
             var stream = streamGenerator.getStream(self.frequencyArray);
             var i = data.length;
             while (i--) {
+                console.log(i);
                 data[i] = stream[i];
             }
         };

@@ -30,22 +30,58 @@ var StreamGenerator = (function () {
 var Player = (function () {
     function Player(webkitAudioContext, options) {
         this.isPlaying = false;
+        this.scale = {
+            "C": 3,
+            "B#": 3,
+            "C#": 4,
+            "D": 5,
+            "D#": 6,
+            "E": 7,
+            "E#": 8,
+            "F": 8,
+            "F#": 9,
+            "G": 10,
+            "G#": 11,
+            "A": 0,
+            "A#": 1,
+            "B": 2
+        };
         this.context = webkitAudioContext;
         this.options = options;
         this.node = this.context.createJavaScriptNode(this.options.streamLength, 2, this.options.channel);
         this.isPlaying = false;
     }
+    Player.prototype.setRandomPitch = function () {
+        var randomChars = [];
+        for (var key in this.scale) {
+            randomChars.push(key);
+        }
+        var randomChar = randomChars[parseInt(Math.random() * randomChars.length + "")];
+        var randomPitch = parseInt(Math.random() * 7 + 1 + "");
+        this.setPitch(randomChar, randomPitch);
+    };
+
     Player.prototype.changeVolume = function (volume) {
         this.options.volume = volume;
     };
+
     Player.prototype.clearPitch = function () {
         this.frequencyArray = [];
+        this.pitchArray = [];
     };
 
-    Player.prototype.setPitch = function (scaleChars, pitch) {
-        var pitch = this.getPitch(scaleChars, pitch);
+    Player.prototype.setPitch = function (scaleChars, scalePitch) {
+        var pitch = this.getPitch(scaleChars, scalePitch);
         this.frequencyArray.push(pitch);
-        return pitch;
+        this.pitchArray.push(scaleChars + scalePitch);
+    };
+
+    Player.prototype.getPitchString = function () {
+        return this.pitchArray.join(",");
+    };
+
+    Player.prototype.getFrequencyString = function () {
+        return this.frequencyArray.join(",");
     };
 
     Player.prototype.play = function () {
@@ -69,24 +105,8 @@ var Player = (function () {
     };
 
     Player.prototype.getPitch = function (scaleChars, pitch) {
-        var scale = {};
-        scale["C"] = 3;
-        scale["B#"] = 3;
-        scale["C#"] = 4;
-        scale["D"] = 5;
-        scale["D#"] = 6;
-        scale["E"] = 7;
-        scale["E#"] = 8;
-        scale["F"] = 8;
-        scale["F#"] = 9;
-        scale["G"] = 10;
-        scale["G#"] = 11;
-        scale["A"] = 0;
-        scale["A#"] = 1;
-        scale["B"] = 2;
-
         var diffFromA4 = 0;
-        diffFromA4 += scale[scaleChars];
+        diffFromA4 += this.scale[scaleChars];
         diffFromA4 += (pitch - 4) * 12;
 
         var frequency = 440 * Math.pow(Math.pow(2.0, 1.0 / 12.0), diffFromA4);

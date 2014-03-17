@@ -4,7 +4,8 @@
         <script src="../js/player.js"></script>
     </head>
     <body>
-        <div>現在の周波数:<span id="pitch"></span></div>
+        <div>現在の周波数:<span id="frequency"></span></div>
+        <div>現在の音程:<span id="pitch"></span></div>
         音程:<select id="interval">
             <option value="C1">C1</option>
             <option value="C#1">C#1</option>
@@ -104,6 +105,7 @@
             <option value="1.0">10</option>
         </select><br>
         <input type="submit" value="鳴らす" id="submit"><br>
+        <input type="submit" value="ランダムで鳴らす" id="randomSubmit"><br>
     </body> 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
@@ -128,8 +130,9 @@
                     var scaleChars = matches[1];
                     var pitch = matches[2];
                     player.clearPitch();
-                    var hz = player.setPitch(scaleChars , pitch);
-                    $("#pitch").html(hz);
+                    player.setPitch(scaleChars , pitch);
+                    $("#pitch").html(player.getPitchString());
+                    $("#frequency").html(player.getFrequencyString());
 
                     var volume = $("#volume>option:selected").val();
                     player.changeVolume(volume);
@@ -138,6 +141,25 @@
                     this.value = "止める";
                 }
             })
+
+            document.getElementById('randomSubmit').addEventListener("click" , function(){
+                if(played){
+                    player.stop();
+                    played = false;
+                    this.value = "ランダムで鳴らす";
+                }else{
+                    player.clearPitch();
+                    player.setRandomPitch();
+                    $("#pitch").html(player.getPitchString());
+                    $("#frequency").html(player.getFrequencyString());
+                    var volume = $("#volume>option:selected").val();
+                    player.changeVolume(volume);
+                    player.play();
+                    played = true;
+                    this.value = "止める";
+                }
+            })
+
         })
     </script>
 </html>

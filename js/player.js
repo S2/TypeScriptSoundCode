@@ -6,7 +6,7 @@ var StreamGenerator = (function () {
         this.options = options;
     }
     StreamGenerator.prototype.getWave = function (frequency) {
-        var wave = Math.sin(2 * Math.PI * this.phase);
+        var wave = this.options.volume * Math.sin(2 * Math.PI * this.phase);
         return wave;
     };
 
@@ -20,7 +20,6 @@ var StreamGenerator = (function () {
                 var frequency = frequencyArray[j];
                 stream[i] += this.getWave(frequency);
             }
-            console.log(stream[i] + "");
             this.phase += phaseStep;
         }
         return stream;
@@ -45,7 +44,6 @@ var Player = (function () {
             var stream = streamGenerator.getStream(self.frequencyArray);
             var i = data.length;
             while (i--) {
-                console.log(i);
                 data[i] = stream[i];
             }
         };
@@ -56,6 +54,31 @@ var Player = (function () {
     Player.prototype.stop = function () {
         this.node.disconnect();
         this.isPlaying = false;
+    };
+
+    Player.prototype.getPitch = function (scaleChars, pitch) {
+        var scale = {};
+        scale["C"] = 3;
+        scale["B#"] = 3;
+        scale["C#"] = 4;
+        scale["D"] = 5;
+        scale["D#"] = 6;
+        scale["E"] = 7;
+        scale["E#"] = 8;
+        scale["F"] = 8;
+        scale["F#"] = 9;
+        scale["G"] = 10;
+        scale["G#"] = 11;
+        scale["A"] = 0;
+        scale["A#"] = 1;
+        scale["B"] = 2;
+
+        var diffFromA4 = 0;
+        diffFromA4 += scale[scaleChars];
+        diffFromA4 += (pitch - 4) * 12;
+
+        var frequency = 440 * Math.pow(Math.pow(2.0, 1.0 / 12.0), diffFromA4);
+        return parseInt(frequency + "");
     };
     return Player;
 })();

@@ -2,6 +2,7 @@ interface StreamGeneratorOption{
     sampleRate : number ;
     channel : number ;
     streamLength : number ;
+    volume : number;
 };
 
 class StreamGenerator{
@@ -12,7 +13,7 @@ class StreamGenerator{
     }
     
     public getWave(frequency : number) : number {
-        var wave = Math.sin(2 * Math.PI * this.phase);
+        var wave = this.options.volume * Math.sin(2 * Math.PI * this.phase);
         return wave;
     }
 
@@ -26,7 +27,6 @@ class StreamGenerator{
                 var frequency = frequencyArray[j];
                 stream[i] += this.getWave(frequency);
             }
-            console.log(stream[i] + "");
             this.phase += phaseStep;
         }
         return stream;

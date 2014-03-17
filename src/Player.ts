@@ -23,7 +23,6 @@ class Player{
             var stream = streamGenerator.getStream(self.frequencyArray);
             var i = data.length;
             while (i--){
-                console.log(i);
                 data[i] = stream[i];
             }
         };
@@ -34,5 +33,30 @@ class Player{
     public stop () {
         this.node.disconnect();
         this.isPlaying = false;
+    }
+
+    public getPitch(scaleChars : string , pitch : number):number{
+        var scale = {};
+        scale["C" ] = 3;
+        scale["B#"] = 3;
+        scale["C#"] = 4;
+        scale["D" ] = 5;
+        scale["D#"] = 6;
+        scale["E" ] = 7;
+        scale["E#"] = 8;
+        scale["F" ] = 8;
+        scale["F#"] = 9;
+        scale["G" ] = 10;
+        scale["G#"] = 11;
+        scale["A" ] = 0;
+        scale["A#"] = 1;
+        scale["B" ] = 2;
+    
+        var diffFromA4 : number = 0;
+        diffFromA4 += scale[scaleChars];
+        diffFromA4 += (pitch - 4) * 12;
+    
+        var frequency : number = 440 * Math.pow(Math.pow(2.0, 1.0/12.0) , diffFromA4)
+        return parseInt(frequency + "");
     }
 }

@@ -4,8 +4,8 @@
         <script src="../js/player.js"></script>
     </head>
     <body>
+        <div>現在の周波数:<span id="pitch"></span></div>
         音程:<select id="interval">
-            <option>ランダム</option>
             <option value="C1">C1</option>
             <option value="C#1">C#1</option>
             <option value="D1">D1</option>
@@ -51,7 +51,7 @@
             <option value="F#4">F#4</option>
             <option value="G4">G4</option>
             <option value="G#4">G#4</option>
-            <option value="A4">A4</option>
+            <option value="A4" selected>A4</option>
             <option value="A#4">A#4</option>
             <option value="B4">B4</option>
             <option value="C5">C5</option>
@@ -91,10 +91,21 @@
             <option value="A#7">A#7</option>
             <option value="B7">B7</option>
         </select><br>
-        ボリューム:<input type="text" value="50" id="volume"><br>
+        ボリューム:<select id="volume">
+            <option value="0.1">1</option>
+            <option value="0.2">2</option>
+            <option value="0.3">3</option>
+            <option value="0.4">4</option>
+            <option value="0.5">5</option>
+            <option value="0.6">6</option>
+            <option value="0.7">7</option>
+            <option value="0.8">8</option>
+            <option value="0.9">9</option>
+            <option value="1.0">10</option>
+        </select><br>
         <input type="submit" value="鳴らす" id="submit"><br>
     </body> 
-
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>
         window.addEventListener("load",function(){
             var playerOption = {
@@ -104,11 +115,29 @@
                 volume : 0.1,
             };
             var frequencyArray = [440];
-            var player = new Player( new webkitAudioContext() , playerOption , frequencyArray);
-            player.play();
-            setTimeout(function(){
-                player.stop();
-            }, 1500);
+            var player = new Player( new webkitAudioContext() , playerOption);
+            var played = false;
+            document.getElementById('submit').addEventListener("click" , function(){
+                if(played){
+                    player.stop();
+                    played = false;
+                    this.value = "鳴らす";
+                }else{
+                    var selected = $("#interval>option:selected").val();
+                    var matches = selected.match(/(.*)(\d{1})/);
+                    var scaleChars = matches[1];
+                    var pitch = matches[2];
+                    player.clearPitch();
+                    var hz = player.setPitch(scaleChars , pitch);
+                    $("#pitch").html(hz);
+
+                    var volume = $("#volume>option:selected").val();
+                    player.changeVolume(volume);
+                    player.play();
+                    played = true;
+                    this.value = "止める";
+                }
+            })
         })
     </script>
 </html>

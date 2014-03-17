@@ -7,12 +7,24 @@ class Player{
     options:StreamGeneratorOption;
     frequencyArray : number[];
 
-    constructor(webkitAudioContext : any , options : StreamGeneratorOption, frequencyArray : number[]){
+    constructor(webkitAudioContext : any , options : StreamGeneratorOption){
         this.context = webkitAudioContext;
         this.options = options;
         this.node = this.context.createJavaScriptNode(this.options.streamLength, 2, this.options.channel);
         this.isPlaying = false;
-        this.frequencyArray = frequencyArray;
+    }
+    
+    public changeVolume(volume:number){
+        this.options.volume = volume
+    }
+    public clearPitch(){
+        this.frequencyArray = [];
+    }
+
+    public setPitch(scaleChars : string , pitch : number){
+        var pitch = this.getPitch(scaleChars , pitch);
+        this.frequencyArray.push(pitch);
+        return pitch
     }
 
     public play (){
@@ -35,7 +47,7 @@ class Player{
         this.isPlaying = false;
     }
 
-    public getPitch(scaleChars : string , pitch : number):number{
+    private getPitch(scaleChars : string , pitch : number):number{
         var scale = {};
         scale["C" ] = 3;
         scale["B#"] = 3;

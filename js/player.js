@@ -28,14 +28,26 @@ var StreamGenerator = (function () {
 })();
 ;
 var Player = (function () {
-    function Player(webkitAudioContext, options, frequencyArray) {
+    function Player(webkitAudioContext, options) {
         this.isPlaying = false;
         this.context = webkitAudioContext;
         this.options = options;
         this.node = this.context.createJavaScriptNode(this.options.streamLength, 2, this.options.channel);
         this.isPlaying = false;
-        this.frequencyArray = frequencyArray;
     }
+    Player.prototype.changeVolume = function (volume) {
+        this.options.volume = volume;
+    };
+    Player.prototype.clearPitch = function () {
+        this.frequencyArray = [];
+    };
+
+    Player.prototype.setPitch = function (scaleChars, pitch) {
+        var pitch = this.getPitch(scaleChars, pitch);
+        this.frequencyArray.push(pitch);
+        return pitch;
+    };
+
     Player.prototype.play = function () {
         var self = this;
         var streamGenerator = new StreamGenerator(this.options);

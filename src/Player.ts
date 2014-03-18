@@ -9,12 +9,10 @@ class Player{
     pitchArray : string[];
     scale : {} = {
         "C"  : 3,
-        "B#" : 3,
         "C#" : 4,
         "D"  : 5,
         "D#" : 6,
         "E"  : 7,
-        "E#" : 8,
         "F"  : 8,
         "F#" : 9,
         "G"  : 10,
@@ -23,6 +21,21 @@ class Player{
         "A#" : 1,
         "B"  : 2,
     };
+
+    scaleArray = [
+        "C"  , 
+        "C#" , 
+        "D"  , 
+        "D#" , 
+        "E"  , 
+        "F"  , 
+        "F#" , 
+        "G"  , 
+        "G#" , 
+        "A"  , 
+        "A#" , 
+        "B"  , 
+    ];
 
     constructor(webkitAudioContext : any , options : StreamGeneratorOption){
         this.context = webkitAudioContext;
@@ -48,6 +61,43 @@ class Player{
     public clearPitch(){
         this.frequencyArray = [];
         this.pitchArray = [];
+    }
+    
+    public addMajor3(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 4)
+    }
+
+    public addMinor3(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 3)
+    }
+
+    public addMajor7(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 11)
+    }
+
+    public addMinor7(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 10)
+    }
+
+    public increasePitch(baseScaleChars : string , baseScalePitch : number , upCount : number = 1){
+        var baseScaleCharsIndex = 0;
+        for( var i = 0 , arrayLength = this.scaleArray.length ; i < arrayLength ; i++){
+            if(this.scaleArray[i] == baseScaleChars){
+                baseScaleCharsIndex = i;
+                break;
+            }
+        }
+        
+        baseScaleCharsIndex += upCount
+        while(baseScaleCharsIndex > this.scaleArray.length){
+            baseScaleCharsIndex -= this.scaleArray.length;
+            baseScalePitch++
+        }
+        while(baseScaleCharsIndex < 0){
+            baseScaleCharsIndex += this.scaleArray.length;
+            baseScalePitch--
+        }
+        return this.setPitch(this.scaleArray[baseScaleCharsIndex] , baseScalePitch);
     }
 
     public setPitch(scaleChars : string , scalePitch : number){

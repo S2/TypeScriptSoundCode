@@ -6,21 +6,20 @@ var StreamGenerator = (function () {
         this.options = options;
     }
     StreamGenerator.prototype.getWave = function (frequency) {
-        var wave = this.options.volume * Math.sin(2 * Math.PI * this.phase);
+        var wave = this.options.volume * Math.sin(2 * Math.PI * this.phase * frequency / this.options.sampleRate);
         return wave;
     };
 
     StreamGenerator.prototype.getStream = function (frequencyArray) {
         var stream = [];
         var arrayLength = frequencyArray.length;
-        var phaseStep = frequencyArray[0] / this.options.sampleRate;
         for (var i = 0; i < this.options.streamLength; i++) {
             stream[i] = 0;
             for (var j = 0; j < arrayLength; j++) {
                 var frequency = frequencyArray[j];
                 stream[i] += this.getWave(frequency);
             }
-            this.phase += phaseStep;
+            this.phase++;
         }
         return stream;
     };
@@ -32,12 +31,10 @@ var Player = (function () {
         this.isPlaying = false;
         this.scale = {
             "C": 3,
-            "B#": 3,
             "C#": 4,
             "D": 5,
             "D#": 6,
             "E": 7,
-            "E#": 8,
             "F": 8,
             "F#": 9,
             "G": 10,
@@ -46,6 +43,20 @@ var Player = (function () {
             "A#": 1,
             "B": 2
         };
+        this.scaleArray = [
+            "C",
+            "C#",
+            "D",
+            "D#",
+            "E",
+            "F",
+            "F#",
+            "G",
+            "G#",
+            "A",
+            "A#",
+            "B"
+        ];
         this.context = webkitAudioContext;
         this.options = options;
         this.node = this.context.createJavaScriptNode(this.options.streamLength, 2, this.options.channel);
@@ -68,6 +79,44 @@ var Player = (function () {
     Player.prototype.clearPitch = function () {
         this.frequencyArray = [];
         this.pitchArray = [];
+    };
+
+    Player.prototype.addMajor3 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 4);
+    };
+
+    Player.prototype.addMinor3 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 3);
+    };
+
+    Player.prototype.addMajor7 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 11);
+    };
+
+    Player.prototype.addMinor7 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 10);
+    };
+
+    Player.prototype.increasePitch = function (baseScaleChars, baseScalePitch, upCount) {
+        if (typeof upCount === "undefined") { upCount = 1; }
+        var baseScaleCharsIndex = 0;
+        for (var i = 0, arrayLength = this.scaleArray.length; i < arrayLength; i++) {
+            if (this.scaleArray[i] == baseScaleChars) {
+                baseScaleCharsIndex = i;
+                break;
+            }
+        }
+
+        baseScaleCharsIndex += upCount;
+        while (baseScaleCharsIndex > this.scaleArray.length) {
+            baseScaleCharsIndex -= this.scaleArray.length;
+            baseScalePitch++;
+        }
+        while (baseScaleCharsIndex < 0) {
+            baseScaleCharsIndex += this.scaleArray.length;
+            baseScalePitch--;
+        }
+        return this.setPitch(this.scaleArray[baseScaleCharsIndex], baseScalePitch);
     };
 
     Player.prototype.setPitch = function (scaleChars, scalePitch) {

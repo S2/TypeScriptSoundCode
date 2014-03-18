@@ -13,21 +13,20 @@ class StreamGenerator{
     }
     
     public getWave(frequency : number) : number {
-        var wave = this.options.volume * Math.sin(2 * Math.PI * this.phase);
+        var wave = this.options.volume * Math.sin(2 * Math.PI * this.phase * frequency / this.options.sampleRate);
         return wave;
     }
 
     public getStream(frequencyArray : number[]) {
         var stream = [];
         var arrayLength : number = frequencyArray.length 
-        var phaseStep = frequencyArray[0] / this.options.sampleRate;
         for (var i = 0 ; i < this.options.streamLength; i++) {
             stream[i]  = 0;
             for( var j = 0 ; j < arrayLength ; j++){
                 var frequency = frequencyArray[j];
                 stream[i] += this.getWave(frequency);
             }
-            this.phase += phaseStep;
+            this.phase ++ ;
         }
         return stream;
     }

@@ -131,6 +131,8 @@
                     var pitch = matches[2];
                     player.clearPitch();
                     player.setPitch(scaleChars , pitch);
+                    player.addMajor3(scaleChars , pitch);
+                    player.addMajor7(scaleChars , pitch);
                     $("#pitch").html(player.getPitchString());
                     $("#frequency").html(player.getFrequencyString());
 

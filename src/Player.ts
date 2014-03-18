@@ -63,22 +63,6 @@ class Player{
         this.pitchArray = [];
     }
     
-    public addMajor3(baseScaleChars : string , baseScalePitch : number){
-        return this.increasePitch(baseScaleChars , baseScalePitch , 4)
-    }
-
-    public addMinor3(baseScaleChars : string , baseScalePitch : number){
-        return this.increasePitch(baseScaleChars , baseScalePitch , 3)
-    }
-
-    public addMajor7(baseScaleChars : string , baseScalePitch : number){
-        return this.increasePitch(baseScaleChars , baseScalePitch , 11)
-    }
-
-    public addMinor7(baseScaleChars : string , baseScalePitch : number){
-        return this.increasePitch(baseScaleChars , baseScalePitch , 10)
-    }
-
     public increasePitch(baseScaleChars : string , baseScalePitch : number , upCount : number = 1){
         var baseScaleCharsIndex = 0;
         for( var i = 0 , arrayLength = this.scaleArray.length ; i < arrayLength ; i++){
@@ -89,7 +73,7 @@ class Player{
         }
         
         baseScaleCharsIndex += upCount
-        while(baseScaleCharsIndex > this.scaleArray.length){
+        while(baseScaleCharsIndex >= this.scaleArray.length){
             baseScaleCharsIndex -= this.scaleArray.length;
             baseScalePitch++
         }
@@ -141,5 +125,37 @@ class Player{
     
         var frequency : number = 440 * Math.pow(Math.pow(2.0, 1.0/12.0) , diffFromA4)
         return parseInt(frequency + "");
+    }
+
+    public addMajor3(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 4)
+    }
+
+    public addMinor3(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 3)
+    }
+
+    public addMajor7(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 11)
+    }
+
+    public addMinor7(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 10)
+    }
+
+    public add5(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 7)
+    }
+
+    public addMinus5(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 6)
+    }
+
+    public addPlus5(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 8)
+    }
+
+    public add6(baseScaleChars : string , baseScalePitch : number){
+        return this.increasePitch(baseScaleChars , baseScalePitch , 9)
     }
 }

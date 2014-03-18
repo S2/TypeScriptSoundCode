@@ -81,22 +81,6 @@ var Player = (function () {
         this.pitchArray = [];
     };
 
-    Player.prototype.addMajor3 = function (baseScaleChars, baseScalePitch) {
-        return this.increasePitch(baseScaleChars, baseScalePitch, 4);
-    };
-
-    Player.prototype.addMinor3 = function (baseScaleChars, baseScalePitch) {
-        return this.increasePitch(baseScaleChars, baseScalePitch, 3);
-    };
-
-    Player.prototype.addMajor7 = function (baseScaleChars, baseScalePitch) {
-        return this.increasePitch(baseScaleChars, baseScalePitch, 11);
-    };
-
-    Player.prototype.addMinor7 = function (baseScaleChars, baseScalePitch) {
-        return this.increasePitch(baseScaleChars, baseScalePitch, 10);
-    };
-
     Player.prototype.increasePitch = function (baseScaleChars, baseScalePitch, upCount) {
         if (typeof upCount === "undefined") { upCount = 1; }
         var baseScaleCharsIndex = 0;
@@ -108,7 +92,7 @@ var Player = (function () {
         }
 
         baseScaleCharsIndex += upCount;
-        while (baseScaleCharsIndex > this.scaleArray.length) {
+        while (baseScaleCharsIndex >= this.scaleArray.length) {
             baseScaleCharsIndex -= this.scaleArray.length;
             baseScalePitch++;
         }
@@ -160,6 +144,38 @@ var Player = (function () {
 
         var frequency = 440 * Math.pow(Math.pow(2.0, 1.0 / 12.0), diffFromA4);
         return parseInt(frequency + "");
+    };
+
+    Player.prototype.addMajor3 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 4);
+    };
+
+    Player.prototype.addMinor3 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 3);
+    };
+
+    Player.prototype.addMajor7 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 11);
+    };
+
+    Player.prototype.addMinor7 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 10);
+    };
+
+    Player.prototype.add5 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 7);
+    };
+
+    Player.prototype.addMinus5 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 6);
+    };
+
+    Player.prototype.addPlus5 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 8);
+    };
+
+    Player.prototype.add6 = function (baseScaleChars, baseScalePitch) {
+        return this.increasePitch(baseScaleChars, baseScalePitch, 9);
     };
     return Player;
 })();

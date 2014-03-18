@@ -3,6 +3,11 @@
         <meta charset="UTF-8"> 
         <script src="../js/player.js"></script>
     </head>
+    <style>
+        td{
+            border:1px solid black;"
+        }
+    </style>
     <body>
         <div>現在の周波数:<span id="frequency"></span></div>
         <div>現在の音程:<span id="pitch"></span></div>
@@ -104,6 +109,36 @@
             <option value="0.9">9</option>
             <option value="1.0">10</option>
         </select><br>
+        <table>
+            <tr>
+                <td>三度</td>
+                <td>五度</td>
+                <td>六度</td>
+                <td>七度</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="radio" name="three" id="no3" checked><label for="no3">N/A<label><br>
+                    <input type="radio" name="three" id="major3"><label for="major3">M3<label><br>
+                    <input type="radio" name="three" id="minor3"><label for="minor3">m3<label>
+                </td>
+                <td>
+                    <input type="radio" name="five" id="no5" checked><label for="no5">N/A<label><br>
+                    <input type="radio" name="five" id="minus5"><label for="minus5">♭5<label><br>
+                    <input type="radio" name="five" id="5"><label for="5">5<label><br>
+                    <input type="radio" name="five" id="plus5"><label for="plus5">♯5<label><br>
+                </td>
+                <td>
+                    <input type="radio" name="six" id="no6" checked><label for="no6">N/A<label><br>
+                    <input type="radio" name="six" id="6"><label for="6">6<label><br>
+                </td>
+                <td>
+                    <input type="radio" name="seven" id="no7" checked><label for="no7">N/A<label><br>
+                    <input type="radio" name="seven" id="major7"><label for="major7">M7<label><br>
+                    <input type="radio" name="seven" id="minor7"><label for="minor7">m7<label>
+                </td>
+            </tr>
+        </table>
         <input type="submit" value="鳴らす" id="submit"><br>
         <input type="submit" value="ランダムで鳴らす" id="randomSubmit"><br>
     </body> 
@@ -120,6 +155,7 @@
             var player = new Player( new webkitAudioContext() , playerOption);
             var played = false;
             document.getElementById('submit').addEventListener("click" , function(){
+
                 if(played){
                     player.stop();
                     played = false;
@@ -131,8 +167,32 @@
                     var pitch = matches[2];
                     player.clearPitch();
                     player.setPitch(scaleChars , pitch);
-                    player.addMajor3(scaleChars , pitch);
-                    player.addMajor7(scaleChars , pitch);
+
+                    var three = $("input[name=three]:checked").attr("id");
+                    if(three == "major3"){
+                        player.addMajor3(scaleChars , pitch);
+                    }else if(three == "minor3"){
+                        player.addMinor3(scaleChars , pitch);
+                    }
+                    var five = $("input[name=five]:checked").attr("id");
+                    if(five == "minus5"){
+                        player.addMinus5(scaleChars , pitch);
+                    }else if(five == "5"){
+                        player.add5(scaleChars , pitch);
+                    }else if(five == "plus5"){
+                        player.addPlus5(scaleChars , pitch);
+                    }
+                    var six = $("input[name=six]:checked").attr("id");
+                    if(six == "6"){
+                        player.add6(scaleChars , pitch);
+                    }
+                    var seven = $("input[name=seven]:checked").attr("id");
+                    if(seven == "major7"){
+                        player.addMajor7(scaleChars , pitch);
+                    }else if(seven == "minor7"){
+                        player.addMinor7(scaleChars , pitch);
+                    }
+
                     $("#pitch").html(player.getPitchString());
                     $("#frequency").html(player.getFrequencyString());
 
@@ -156,6 +216,32 @@
                     $("#frequency").html(player.getFrequencyString());
                     var volume = $("#volume>option:selected").val();
                     player.changeVolume(volume);
+
+                    var three = $("input[name=three]:checked").attr("id");
+                    if(three == "major3"){
+                        player.addMajor3(scaleChars , pitch);
+                    }else if(three == "minor3"){
+                        player.addMinor3(scaleChars , pitch);
+                    }
+                    var five = $("input[name=five]:checked").attr("id");
+                    if(five == "minus5"){
+                        player.addMinus5(scaleChars , pitch);
+                    }else if(five == "5"){
+                        player.addMinus5(scaleChars , pitch);
+                    }else if(five == "plus5"){
+                        player.addPlus5(scaleChars , pitch);
+                    }
+                    var six = $("input[name=six]:checked").attr("id");
+                    if(six == "6"){
+                        player.addSix(scaleChars , pitch);
+                    }
+                    var seven = $("input[name=seven]:checked").attr("id");
+                    if(seven == "major7"){
+                        player.addMajor7(scaleChars , pitch);
+                    }else if(seven == "minor7"){
+                        player.addMinor7(scaleChars , pitch);
+                    }
+
                     player.play();
                     played = true;
                     this.value = "止める";
